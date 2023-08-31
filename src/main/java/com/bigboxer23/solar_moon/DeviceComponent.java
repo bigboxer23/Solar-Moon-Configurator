@@ -1,6 +1,7 @@
 package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Device;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,8 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.EnhancedGlobalSecondaryIndex;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 
 /** */
@@ -50,26 +53,27 @@ public class DeviceComponent {
 		return getDeviceTable().getItem(new Device(id, clientId));
 	}
 
+	public Stream<Page<Device>> getDevices(String clientId) {
+		return getDeviceTable()
+				.index(Device.CLIENT_INDEX)
+				.query(QueryConditional.keyEqualTo(builder -> builder.partitionValue(clientId)))
+				.stream();
+	}
+
 	public void createDeviceTable() {
 		getDeviceTable()
 				.createTable(builder -> builder.globalSecondaryIndices(
-						EnhancedGlobalSecondaryIndex.builder()
-								.indexName(Device.NAME_INDEX)
-								.projection(projectionBuilder -> projectionBuilder
-										.projectionType(ProjectionType.ALL)
-										.build())
-								.build(),
-						EnhancedGlobalSecondaryIndex.builder()
-								.indexName(Device.DEVICE_NAME_INDEX)
-								.projection(projectionBuilder -> projectionBuilder
-										.projectionType(ProjectionType.ALL)
-										.build())
-								.build(),
-						EnhancedGlobalSecondaryIndex.builder()
-								.indexName(Device.DEVICE_KEY_INDEX)
-								.projection(projectionBuilder -> projectionBuilder
-										.projectionType(ProjectionType.ALL)
-										.build())
-								.build()));
+						getBuilder(Device.NAME_INDEX),
+						getBuilder(Device.DEVICE_NAME_INDEX),
+						getBuilder(Device.DEVICE_KEY_INDEX),
+						getBuilder(Device.CLIENT_INDEX)));
+	}
+
+	private EnhancedGlobalSecondaryIndex getBuilder(String indexName) {
+		return EnhancedGlobalSecondaryIndex.builder()
+				.indexName(indexName)
+				.projection(projectionBuilder ->
+						projectionBuilder.projectionType(ProjectionType.ALL).build())
+				.build();
 	}
 }
