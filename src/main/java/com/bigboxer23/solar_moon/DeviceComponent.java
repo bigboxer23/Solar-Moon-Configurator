@@ -39,14 +39,15 @@ public class DeviceComponent {
 	}
 
 	public void updateDevice(Device device) {
-		// TODO:
+		getDeviceTable().updateItem(builder -> builder.item(device));
+	}
+
+	public void deleteDevice(String id, String clientId) {
+		getDeviceTable().deleteItem(new Device(id, clientId));
 	}
 
 	public Device getDevice(String id, String clientId) {
-		Device device = new Device();
-		device.setId(id);
-		device.setClientId(clientId);
-		return getDeviceTable().getItem(device);
+		return getDeviceTable().getItem(new Device(id, clientId));
 	}
 
 	public void createDeviceTable() {
