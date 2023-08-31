@@ -18,6 +18,7 @@
 			<div sec:authorize="isAuthenticated()">
 				<div class="box">
 					Hello, <strong th:text="${#authentication.name}"></strong>!
+					<span sec:authentication="name"></span>
 				</div>
 			</div>
 
