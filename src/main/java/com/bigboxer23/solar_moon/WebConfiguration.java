@@ -1,4 +1,4 @@
-package com.bigboxer23;
+package com.bigboxer23.solar_moon;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
