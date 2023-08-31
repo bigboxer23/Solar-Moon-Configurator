@@ -63,6 +63,12 @@ public class DeviceComponent {
 								.projection(projectionBuilder -> projectionBuilder
 										.projectionType(ProjectionType.ALL)
 										.build())
+								.build(),
+						EnhancedGlobalSecondaryIndex.builder()
+								.indexName(Device.DEVICE_KEY_INDEX)
+								.projection(projectionBuilder -> projectionBuilder
+										.projectionType(ProjectionType.ALL)
+										.build())
 								.build()));
 	}
 }
