@@ -1,6 +1,8 @@
 package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Device;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +23,11 @@ public class DeviceController {
 	}
 
 	// @PreAuthorize("")
+	@Operation(summary = "add a device", description = "api to add a device")
 	@PutMapping("/device")
 	public ResponseEntity<Void> addDevice(@RequestBody Device device) {
 		try {
-			device.setClientId("e8dfcdfd-0752-403c-a3bb-df8e1ff6a873"); // TODO:temp, fetch from cognito
+			device.setClientId(getClientId());
 			deviceComponent.addDevice(device);
 		} catch (Exception e) {
 			logger.warn("addDevice error: " + device, e);
@@ -33,21 +36,39 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Operation(summary = "update a device", description = "api to update a device by id.")
+	@PostMapping("/device")
+	public ResponseEntity<Void> updateDevice(@RequestBody Device device) {
+		device.setClientId(getClientId());
+		deviceComponent.updateDevice(device);
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+
+	@Operation(summary = "delete a device", description = "api to delete a device by id")
+	@DeleteMapping("/device/{id}")
+	public ResponseEntity<Void> deleteDevice(
+			@Parameter(description = "id of the device to delete") @PathVariable("id") String id) {
+		deviceComponent.deleteDevice(id, getClientId());
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+
+	@Operation(summary = "get a device", description = "api to get a device's information by id")
 	@GetMapping("/device/{id}")
-	public ResponseEntity<Device> getDevice(@PathVariable("id") String id) {
-		return new ResponseEntity<>(deviceComponent.getDevice(id, "sampleClientId"), HttpStatus.OK);
+	public ResponseEntity<Device> getDevice(
+			@Parameter(description = "id of the device to find") @PathVariable("id") String id) {
+		return new ResponseEntity<>(deviceComponent.getDevice(id, getClientId()), HttpStatus.OK);
 	}
 
-	@PostMapping("/virtualDevice")
-	public ResponseEntity<String> addVirtualDevice(Device device) {
-		// TODO:
-		// addDevice(device);
-		return null;
-	}
-
-	@PostMapping("/createDeviceTable")
+	@Operation(
+			summary = "API to create the dynamodb table if doesn't exist",
+			description = "create the dynamodb table if doesn't exist")
+	@PostMapping("/createTable")
 	public ResponseEntity<Void> createDeviceTable() {
 		deviceComponent.createDeviceTable();
 		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+
+	private String getClientId() {
+		return "e8dfcdfd-0752-403c-a3bb-df8e1ff6a873"; // TODO:temp, fetch from cognito
 	}
 }
