@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class TestDeviceComponent {
 
 	@Autowired
-	DeviceComponent component;
+	ExtendedDeviceComponent component;
 
 	@Test
 	public void testAddDevice() {

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class DeviceController {
 	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
-	private final DeviceComponent deviceComponent;
+	private final ExtendedDeviceComponent deviceComponent;
 
-	public DeviceController(DeviceComponent deviceComponent) {
+	public DeviceController(ExtendedDeviceComponent deviceComponent) {
 		this.deviceComponent = deviceComponent;
 	}
 
