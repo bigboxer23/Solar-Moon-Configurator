@@ -89,7 +89,7 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}*/
 
-	private String getClientId() {
+	public static String getClientId() {
 		return "e8dfcdfd-0752-403c-a3bb-df8e1ff6a873"; // TODO:temp, fetch from cognito
 	}
 }

@@ -22,7 +22,7 @@ public class ExtendedCustomerComponent extends CustomerComponent {
 			logger.warn("email or customer id is null/empty, cannot fetch.");
 			return null;
 		}
-		if (findCustomerById(customerId) != null) {
+		if (findCustomerByCustomerId(customerId) != null) {
 			logger.debug(customerId + ":" + email + " exists, not putting into db");
 			return null;
 		}
@@ -45,11 +45,11 @@ public class ExtendedCustomerComponent extends CustomerComponent {
 	}
 
 	public void deleteCustomerByCustomerId(String customerId) {
-		Optional.ofNullable(findCustomerById(customerId))
+		Optional.ofNullable(findCustomerByCustomerId(customerId))
 				.ifPresent(customer -> getTable().deleteItem(customer));
 	}
 
-	public Customer findCustomerById(String customerId) {
+	public Customer findCustomerByCustomerId(String customerId) {
 		return customerId != null && !customerId.isEmpty()
 				? this.getTable()
 						.index(Customer.CUSTOMER_ID_INDEX)
