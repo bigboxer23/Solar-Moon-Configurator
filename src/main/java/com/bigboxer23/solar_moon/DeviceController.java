@@ -64,7 +64,7 @@ public class DeviceController {
 	@Operation(
 			summary = "API to create the dynamodb table if doesn't exist",
 			description = "create the dynamodb table if doesn't exist")
-	@PostMapping("/createTable")
+	@PostMapping("/createDeviceTable")
 	public ResponseEntity<Void> createDeviceTable() {
 		deviceComponent.createDeviceTable();
 		return new ResponseEntity<>(null, HttpStatus.OK);
@@ -79,6 +79,15 @@ public class DeviceController {
 		deviceComponent.getDevices(getClientId()).forEach(page -> devices.addAll(page.items()));
 		return new ResponseEntity<>(devices, HttpStatus.OK);
 	}
+
+	/*@Operation(
+			summary = "iterate devices and generate missing device keys",
+			description = "does not update existing keys")
+	@GetMapping("/generateDeviceKeys")
+	public ResponseEntity<Void> generateDeviceKeys() {
+		deviceComponent.generateDeviceKeysIfEmpty(getClientId());
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}*/
 
 	private String getClientId() {
 		return "e8dfcdfd-0752-403c-a3bb-df8e1ff6a873"; // TODO:temp, fetch from cognito

@@ -11,6 +11,9 @@
   <groupId>com.bigboxer23</groupId>
   <artifactId>Solar-Moon-Configurator</artifactId>
   <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>Solar-Moon-Configurator</name>
+  <url>https://github.com/bigboxer23/Solar-Moon-Configurator</url>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -65,11 +68,6 @@
       <version>2.20.135</version>
     </dependency>
     <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>dynamodb-enhanced</artifactId>
-      <version>2.20.135</version>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.28</version>
@@ -77,7 +75,14 @@
     <dependency>
       <groupId>com.bigboxer23</groupId>
       <artifactId>solar-moon-common</artifactId>
-      <version>1.1.0</version>
+      <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.bigboxer23</groupId>
+      <artifactId>solar-moon-common</artifactId>
+      <version>1.2.3</version>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
