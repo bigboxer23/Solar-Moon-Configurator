@@ -11,6 +11,9 @@
   <groupId>com.bigboxer23</groupId>
   <artifactId>Solar-Moon-Configurator</artifactId>
   <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>Solar-Moon-Configurator</name>
+  <url>https://github.com/bigboxer23/Solar-Moon-Configurator</url>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>

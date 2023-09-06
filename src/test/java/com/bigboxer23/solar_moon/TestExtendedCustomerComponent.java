@@ -1,12 +1,12 @@
 package com.bigboxer23.solar_moon;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.bigboxer23.solar_moon.data.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /** */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,6 +53,8 @@ public class TestExtendedCustomerComponent {
 		component.updateCustomer(null);
 		customer.setAccessKey("tacos");
 		component.updateCustomer(customer);
-		assertEquals("tacos", component.findCustomerById(TestDeviceComponent.clientId).getAccessKey());
+		assertEquals(
+				"tacos",
+				component.findCustomerById(TestDeviceComponent.clientId).getAccessKey());
 	}
 }
