@@ -23,7 +23,7 @@ public class TestExtendedCustomerComponent {
 		assertNull(component.addCustomer("", ""));
 		component.deleteCustomerByCustomerId(TestDeviceComponent.clientId);
 		component.addCustomer(TestCustomerComponent.CUSTOMER_EMAIL, TestDeviceComponent.clientId);
-		assertNotNull(component.findCustomerById(TestDeviceComponent.clientId));
+		assertNotNull(component.findCustomerByCustomerId(TestDeviceComponent.clientId));
 		component.deleteCustomerByCustomerId(TestDeviceComponent.clientId);
 	}
 
@@ -40,21 +40,21 @@ public class TestExtendedCustomerComponent {
 	@Test
 	public void testFindCustomer() {
 		new TestCustomerComponent().setupTestCustomer();
-		assertNotNull(component.findCustomerById(TestDeviceComponent.clientId));
-		assertNull(component.findCustomerById("tacos"));
-		assertNull(component.findCustomerById(""));
-		assertNull(component.findCustomerById(null));
+		assertNotNull(component.findCustomerByCustomerId(TestDeviceComponent.clientId));
+		assertNull(component.findCustomerByCustomerId("tacos"));
+		assertNull(component.findCustomerByCustomerId(""));
+		assertNull(component.findCustomerByCustomerId(null));
 	}
 
 	@Test
 	public void testUpdateCustomer() {
 		new TestCustomerComponent().setupTestCustomer();
-		Customer customer = component.findCustomerById(TestDeviceComponent.clientId);
+		Customer customer = component.findCustomerByCustomerId(TestDeviceComponent.clientId);
 		component.updateCustomer(null);
 		customer.setAccessKey("tacos");
 		component.updateCustomer(customer);
 		assertEquals(
 				"tacos",
-				component.findCustomerById(TestDeviceComponent.clientId).getAccessKey());
+				component.findCustomerByCustomerId(TestDeviceComponent.clientId).getAccessKey());
 	}
 }

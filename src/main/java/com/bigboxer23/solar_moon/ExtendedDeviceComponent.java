@@ -25,13 +25,6 @@ public class ExtendedDeviceComponent extends DeviceComponent {
 		getTable().deleteItem(new Device(id, clientId));
 	}
 
-	public Device getDevice(String id, String clientId) {
-		if (id == null || clientId == null) {
-			return null;
-		}
-		return getTable().getItem(new Device(id, clientId));
-	}
-
 	/*public Device generateDeviceKey(String id, String clientId, boolean force) {
 		Device device = getDevice(id, clientId);
 		if (device == null) {
@@ -53,7 +46,12 @@ public class ExtendedDeviceComponent extends DeviceComponent {
 	public void createDeviceTable() {
 		TableCreationUtils.createTable(
 				Arrays.asList(
-						Device.NAME_INDEX, Device.DEVICE_NAME_INDEX, Device.DEVICE_KEY_INDEX, Device.CLIENT_INDEX),
+						Device.NAME_INDEX,
+						Device.DEVICE_NAME_INDEX,
+						Device.DEVICE_KEY_INDEX,
+						Device.CLIENT_INDEX,
+						Device.SITE_INDEX,
+						Device.VIRTUAL_INDEX),
 				getTable());
 	}
 }

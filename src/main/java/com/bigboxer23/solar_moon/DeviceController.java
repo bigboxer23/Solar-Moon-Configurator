@@ -4,7 +4,6 @@ import com.bigboxer23.solar_moon.data.Device;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +74,7 @@ public class DeviceController {
 			description = "Return all devices associated with a client")
 	@GetMapping("/devices")
 	public ResponseEntity<List<Device>> getDevices() {
-		List<Device> devices = new ArrayList<>();
-		deviceComponent.getDevices(getClientId()).forEach(page -> devices.addAll(page.items()));
-		return new ResponseEntity<>(devices, HttpStatus.OK);
+		return new ResponseEntity<>(deviceComponent.getDevices(getClientId()), HttpStatus.OK);
 	}
 
 	/*@Operation(
