@@ -2,7 +2,7 @@ package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Customer;
 import com.bigboxer23.solar_moon.utils.TableCreationUtils;
-import com.bigboxer23.solar_moon.utils.TokenGenerator;
+import com.bigboxer23.solar_moon.util.TokenGenerator;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
