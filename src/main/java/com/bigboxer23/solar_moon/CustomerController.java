@@ -1,6 +1,7 @@
 package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Customer;
+import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ public class CustomerController {
 		this.component = component;
 	}
 
+	@Transaction
 	@Operation(
 			summary = "API to create the dynamodb table if doesn't exist",
 			description = "create the dynamodb table if doesn't exist")
@@ -32,6 +34,7 @@ public class CustomerController {
 	}
 
 	// TODO:this is temp admin function, should be generating customers from cognito data
+	@Transaction
 	@Operation(summary = "add a customer", description = "api to add a customer")
 	@PutMapping("/customer")
 	public ResponseEntity<Void> addCustomer(@RequestBody Customer customer) {
@@ -45,6 +48,7 @@ public class CustomerController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "update a customer", description = "api to update a customer by customer id.")
 	@PostMapping("/customer")
 	public ResponseEntity<Void> updateCustomer(@RequestBody Customer customer) {
@@ -53,6 +57,7 @@ public class CustomerController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "delete a customer", description = "api to delete a customer by customer id")
 	@DeleteMapping("/customer")
 	public ResponseEntity<Void> deleteCustomer() {
@@ -60,6 +65,7 @@ public class CustomerController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "get a customer", description = "api to get a customer's information by customer id")
 	@GetMapping("/customer")
 	public ResponseEntity<Customer> getCustomer() {

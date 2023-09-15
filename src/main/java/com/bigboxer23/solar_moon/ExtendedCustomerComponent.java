@@ -5,6 +5,8 @@ import com.bigboxer23.solar_moon.utils.TableCreationUtils;
 import com.bigboxer23.solar_moon.util.TokenGenerator;
 import java.util.Arrays;
 import java.util.Optional;
+
+import com.bigboxer23.solar_moon.web.TransactionUtil;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 
@@ -27,6 +29,7 @@ public class ExtendedCustomerComponent extends CustomerComponent {
 			return null;
 		}
 		Customer customer = new Customer(customerId, email, TokenGenerator.generateNewToken());
+		logAction(customer.getCustomerId(), "add");
 		getTable().putItem(customer);
 		return customer;
 	}
@@ -36,17 +39,24 @@ public class ExtendedCustomerComponent extends CustomerComponent {
 			logger.warn("invalid customer passed, not updating");
 			return;
 		}
+		logAction(customer.getCustomerId(), "update");
 		getTable().updateItem(builder -> builder.item(customer));
 	}
 
 	public void deleteCustomerByEmail(String email) {
-		Optional.ofNullable(email).filter(e -> !e.isBlank()).ifPresent(e -> getTable()
-				.deleteItem(new Customer(null, email, null)));
+		Optional.ofNullable(email).filter(e -> !e.isBlank()).ifPresent(e -> {
+			logAction(email, "delete by customer email");
+			getTable()
+					.deleteItem(new Customer(null, email, null));
+		});
 	}
 
 	public void deleteCustomerByCustomerId(String customerId) {
 		Optional.ofNullable(findCustomerByCustomerId(customerId))
-				.ifPresent(customer -> getTable().deleteItem(customer));
+				.ifPresent(customer -> {
+					logAction(customer.getCustomerId(), "delete by customer id");
+					getTable().deleteItem(customer);
+				});
 	}
 
 	public Customer findCustomerByCustomerId(String customerId) {
@@ -59,5 +69,9 @@ public class ExtendedCustomerComponent extends CustomerComponent {
 						.flatMap((page) -> page.items().stream().findFirst())
 						.orElse(null)
 				: null;
+	}
+
+	private void logAction(String action, String customerId) {
+		logger.debug(customerId + " customer " + action + TransactionUtil.getLoggingStatement());
 	}
 }

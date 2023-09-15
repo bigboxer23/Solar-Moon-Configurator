@@ -1,6 +1,8 @@
 package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Device;
+import com.bigboxer23.solar_moon.util.TokenGenerator;
+import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,11 +26,13 @@ public class DeviceController {
 	}
 
 	// @PreAuthorize("")
+	@Transaction
 	@Operation(summary = "add a device", description = "api to add a device")
 	@PutMapping("/device")
 	public ResponseEntity<Void> addDevice(@RequestBody Device device) {
 		try {
 			device.setClientId(getClientId());
+			device.setId(TokenGenerator.generateNewToken());
 			deviceComponent.addDevice(device);
 		} catch (Exception e) {
 			logger.warn("addDevice error: " + device, e);
@@ -37,6 +41,7 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "update a device", description = "api to update a device by id.")
 	@PostMapping("/device")
 	public ResponseEntity<Void> updateDevice(@RequestBody Device device) {
@@ -45,6 +50,7 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "delete a device", description = "api to delete a device by id")
 	@DeleteMapping("/device/{id}")
 	public ResponseEntity<Void> deleteDevice(
@@ -53,6 +59,7 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(summary = "get a device", description = "api to get a device's information by id")
 	@GetMapping("/device/{id}")
 	public ResponseEntity<Device> getDevice(
@@ -60,6 +67,7 @@ public class DeviceController {
 		return new ResponseEntity<>(deviceComponent.getDevice(id, getClientId()), HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(
 			summary = "API to create the dynamodb table if doesn't exist",
 			description = "create the dynamodb table if doesn't exist")
@@ -69,6 +77,7 @@ public class DeviceController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@Transaction
 	@Operation(
 			summary = "get all devices for a specific client",
 			description = "Return all devices associated with a client")
