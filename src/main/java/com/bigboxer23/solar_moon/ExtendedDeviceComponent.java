@@ -1,10 +1,8 @@
 package com.bigboxer23.solar_moon;
 
 import com.bigboxer23.solar_moon.data.Device;
-import com.bigboxer23.solar_moon.utils.TableCreationUtils;
+import com.bigboxer23.solar_moon.util.TableCreationUtils;
 import java.util.Arrays;
-
-import com.bigboxer23.solar_moon.web.TransactionUtil;
 import org.springframework.stereotype.Component;
 
 /** */
@@ -13,7 +11,7 @@ public class ExtendedDeviceComponent extends DeviceComponent {
 
 	public void addDevice(Device device) {
 		if (getDevice(device.getId(), device.getClientId()) != null) {
-			logger.debug(device.getClientId() + ":" + device.getId() + " exists, not putting into db." + TransactionUtil.getLoggingStatement());
+			logger.debug(device.getClientId() + ":" + device.getId() + " exists, not putting into db.");
 			return;
 		}
 		logAction("add", device.getClientId(), device.getId());
@@ -43,6 +41,6 @@ public class ExtendedDeviceComponent extends DeviceComponent {
 	}
 
 	private void logAction(String action, String customerId, String id) {
-		logger.debug(customerId + ":" + id + " device " + action + TransactionUtil.getLoggingStatement());
+		logger.debug(customerId + ":" + id + " device " + action);
 	}
 }
