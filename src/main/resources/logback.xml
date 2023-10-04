@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<!--<property resource="application.properties" />-->
-	<appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<destination>${logbackserver}</destination>
-		<keepAliveDuration>5 minutes</keepAliveDuration>
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	<property resource="application.properties" />
+	<appender name="OPEN_SEARCH" class="com.bigboxer23.solar_moon.logging.OpenSearchAppender">
+		<url>${OS_CLUSTER}</url>
+		<index>logs-%date{yyyy.MM}</index>
+		<includeMdc>true</includeMdc>
+		<sleepTime>100</sleepTime>
+		<authentication class="com.bigboxer23.solar_moon.logging.BasicAuthentication" /> <!-- optional -->
+		<headers>
+			<header>
+				<name>Content-Type</name>
+				<value>application/json</value>
+			</header>
+		</headers>
 	</appender>
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -14,7 +22,6 @@
 	<logger name="com.bigboxer23" level="INFO"/>
 	<logger name="com.gargoylesoftware.htmlunit.html.BaseFrameElement" level="OFF"/>
 	<root level="INFO">
-<!--		<appender-ref ref="logstash" />-->
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="OPEN_SEARCH" />
 	</root>
 </configuration>

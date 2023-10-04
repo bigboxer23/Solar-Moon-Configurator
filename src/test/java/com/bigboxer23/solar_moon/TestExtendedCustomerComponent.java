@@ -17,12 +17,16 @@ public class TestExtendedCustomerComponent {
 
 	@Test
 	public void testAddCustomer() {
-		assertNull(component.addCustomer(null, null));
-		assertNull(component.addCustomer(TestCustomerComponent.CUSTOMER_EMAIL, null));
-		assertNull(component.addCustomer(null, TestDeviceComponent.clientId));
-		assertNull(component.addCustomer("", ""));
+		assertNull(component.addCustomer(null, null, TestCustomerComponent.CUSTOMER_NAME));
+		assertNull(
+				component.addCustomer(TestCustomerComponent.CUSTOMER_EMAIL, null, TestCustomerComponent.CUSTOMER_NAME));
+		assertNull(component.addCustomer(null, TestDeviceComponent.clientId, TestCustomerComponent.CUSTOMER_NAME));
+		assertNull(component.addCustomer("", "", ""));
 		component.deleteCustomerByCustomerId(TestDeviceComponent.clientId);
-		component.addCustomer(TestCustomerComponent.CUSTOMER_EMAIL, TestDeviceComponent.clientId);
+		component.addCustomer(
+				TestCustomerComponent.CUSTOMER_EMAIL,
+				TestDeviceComponent.clientId,
+				TestCustomerComponent.CUSTOMER_NAME);
 		assertNotNull(component.findCustomerByCustomerId(TestDeviceComponent.clientId));
 		component.deleteCustomerByCustomerId(TestDeviceComponent.clientId);
 	}

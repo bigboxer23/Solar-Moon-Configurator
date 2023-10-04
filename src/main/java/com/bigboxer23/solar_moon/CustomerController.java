@@ -4,8 +4,7 @@ import com.bigboxer23.solar_moon.data.Customer;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Customer Controller", description = "APIs for dealing with customer data")
 @RestController
 public class CustomerController {
-
-	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
-
 	private ExtendedCustomerComponent component;
 
 	public CustomerController(ExtendedCustomerComponent component) {
@@ -28,31 +24,24 @@ public class CustomerController {
 			summary = "API to create the dynamodb table if doesn't exist",
 			description = "create the dynamodb table if doesn't exist")
 	@PostMapping("/createCustomerTable")
-	public ResponseEntity<Void> createTable() {
-		component.createCustomerTable();
-		return new ResponseEntity<>(null, HttpStatus.OK);
-	}
-
-	// TODO:this is temp admin function, should be generating customers from cognito data
-	@Transaction
-	@Operation(summary = "add a customer", description = "api to add a customer")
-	@PutMapping("/customer")
-	public ResponseEntity<Void> addCustomer(@RequestBody Customer customer) {
-		try {
-			customer.setCustomerId(DeviceController.getClientId());
-			component.addCustomer(customer.getEmail(), customer.getCustomerId());
-		} catch (Exception e) {
-			logger.warn("addCustomer: " + customer, e);
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<Void> createTable(HttpServletRequest servletRequest) {
+		Customer jwtCustomer = AuthUtil.authorize(servletRequest, component);
+		if (jwtCustomer == null || !jwtCustomer.isAdmin()) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
+		component.createCustomerTable();
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
 	@Transaction
 	@Operation(summary = "update a customer", description = "api to update a customer by customer id.")
 	@PostMapping("/customer")
-	public ResponseEntity<Void> updateCustomer(@RequestBody Customer customer) {
-		customer.setCustomerId(DeviceController.getClientId());
+	public ResponseEntity<Void> updateCustomer(HttpServletRequest servletRequest, @RequestBody Customer customer) {
+		Customer jwtCustomer = AuthUtil.authorize(servletRequest, component);
+		if (jwtCustomer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		customer.setCustomerId(jwtCustomer.getCustomerId());
 		component.updateCustomer(customer);
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
@@ -60,15 +49,23 @@ public class CustomerController {
 	@Transaction
 	@Operation(summary = "delete a customer", description = "api to delete a customer by customer id")
 	@DeleteMapping("/customer")
-	public ResponseEntity<Void> deleteCustomer() {
-		component.deleteCustomerByCustomerId(DeviceController.getClientId());
+	public ResponseEntity<Void> deleteCustomer(HttpServletRequest servletRequest) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		component.deleteCustomerByCustomerId(customer.getCustomerId());
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
 	@Transaction
 	@Operation(summary = "get a customer", description = "api to get a customer's information by customer id")
 	@GetMapping("/customer")
-	public ResponseEntity<Customer> getCustomer() {
-		return new ResponseEntity<>(component.findCustomerByCustomerId(DeviceController.getClientId()), HttpStatus.OK);
+	public ResponseEntity<Customer> getCustomer(HttpServletRequest servletRequest) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 }
