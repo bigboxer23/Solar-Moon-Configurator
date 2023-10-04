@@ -1,0 +1,9 @@
+[Unit]
+Description=service to run solar-moon website backend
+After=multi-user.target
+[Service]
+WorkingDirectory=/home/ec2-user
+ExecStart=java -Xms256m -Xmx512m -jar ./Solar-Moon-Configurator-1.0.jar
+User=${user}
+[Install]
+WantedBy=multi-user.target

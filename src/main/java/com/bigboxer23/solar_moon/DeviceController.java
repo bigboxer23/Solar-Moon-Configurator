@@ -1,11 +1,13 @@
 package com.bigboxer23.solar_moon;
 
+import com.bigboxer23.solar_moon.data.Customer;
 import com.bigboxer23.solar_moon.data.Device;
 import com.bigboxer23.solar_moon.util.TokenGenerator;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +23,24 @@ public class DeviceController {
 
 	private final ExtendedDeviceComponent deviceComponent;
 
-	public DeviceController(ExtendedDeviceComponent deviceComponent) {
+	private ExtendedCustomerComponent component;
+
+	public DeviceController(ExtendedDeviceComponent deviceComponent, ExtendedCustomerComponent component) {
 		this.deviceComponent = deviceComponent;
+		this.component = component;
 	}
 
 	// @PreAuthorize("")
 	@Transaction
 	@Operation(summary = "add a device", description = "api to add a device")
 	@PutMapping("/device")
-	public ResponseEntity<Void> addDevice(@RequestBody Device device) {
+	public ResponseEntity<Void> addDevice(HttpServletRequest servletRequest, @RequestBody Device device) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
 		try {
-			device.setClientId(getClientId());
+			device.setClientId(customer.getCustomerId());
 			device.setId(TokenGenerator.generateNewToken());
 			deviceComponent.addDevice(device);
 		} catch (Exception e) {
@@ -44,8 +53,12 @@ public class DeviceController {
 	@Transaction
 	@Operation(summary = "update a device", description = "api to update a device by id.")
 	@PostMapping("/device")
-	public ResponseEntity<Void> updateDevice(@RequestBody Device device) {
-		device.setClientId(getClientId());
+	public ResponseEntity<Void> updateDevice(HttpServletRequest servletRequest, @RequestBody Device device) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		device.setClientId(customer.getCustomerId());
 		deviceComponent.updateDevice(device);
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
@@ -54,8 +67,13 @@ public class DeviceController {
 	@Operation(summary = "delete a device", description = "api to delete a device by id")
 	@DeleteMapping("/device/{id}")
 	public ResponseEntity<Void> deleteDevice(
+			HttpServletRequest servletRequest,
 			@Parameter(description = "id of the device to delete") @PathVariable("id") String id) {
-		deviceComponent.deleteDevice(id, getClientId());
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		deviceComponent.deleteDevice(id, customer.getCustomerId());
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
@@ -63,8 +81,13 @@ public class DeviceController {
 	@Operation(summary = "get a device", description = "api to get a device's information by id")
 	@GetMapping("/device/{id}")
 	public ResponseEntity<Device> getDevice(
+			HttpServletRequest servletRequest,
 			@Parameter(description = "id of the device to find") @PathVariable("id") String id) {
-		return new ResponseEntity<>(deviceComponent.getDevice(id, getClientId()), HttpStatus.OK);
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		return new ResponseEntity<>(deviceComponent.getDevice(id, customer.getCustomerId()), HttpStatus.OK);
 	}
 
 	@Transaction
@@ -72,7 +95,11 @@ public class DeviceController {
 			summary = "API to create the dynamodb table if doesn't exist",
 			description = "create the dynamodb table if doesn't exist")
 	@PostMapping("/createDeviceTable")
-	public ResponseEntity<Void> createDeviceTable() {
+	public ResponseEntity<Void> createDeviceTable(HttpServletRequest servletRequest) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null || !customer.isAdmin()) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
 		deviceComponent.createDeviceTable();
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
@@ -82,20 +109,11 @@ public class DeviceController {
 			summary = "get all devices for a specific client",
 			description = "Return all devices associated with a client")
 	@GetMapping("/devices")
-	public ResponseEntity<List<Device>> getDevices() {
-		return new ResponseEntity<>(deviceComponent.getDevices(getClientId()), HttpStatus.OK);
-	}
-
-	/*@Operation(
-			summary = "iterate devices and generate missing device keys",
-			description = "does not update existing keys")
-	@GetMapping("/generateDeviceKeys")
-	public ResponseEntity<Void> generateDeviceKeys() {
-		deviceComponent.generateDeviceKeysIfEmpty(getClientId());
-		return new ResponseEntity<>(null, HttpStatus.OK);
-	}*/
-
-	public static String getClientId() {
-		return "e8dfcdfd-0752-403c-a3bb-df8e1ff6a873"; // TODO:temp, fetch from cognito
+	public ResponseEntity<List<Device>> getDevices(HttpServletRequest servletRequest) {
+		Customer customer = AuthUtil.authorize(servletRequest, component);
+		if (customer == null) {
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+		return new ResponseEntity<>(deviceComponent.getDevices(customer.getCustomerId()), HttpStatus.OK);
 	}
 }
