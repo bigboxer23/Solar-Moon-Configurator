@@ -8,26 +8,6 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedDeviceComponent extends DeviceComponent {
-
-	public void addDevice(Device device) {
-		if (getDevice(device.getId(), device.getClientId()) != null) {
-			logger.debug(device.getClientId() + ":" + device.getId() + " exists, not putting into db.");
-			return;
-		}
-		logAction("add", device.getClientId(), device.getId());
-		getTable().putItem(device);
-	}
-
-	public void updateDevice(Device device) {
-		logAction("update", device.getClientId(), device.getId());
-		getTable().updateItem(builder -> builder.item(device));
-	}
-
-	public void deleteDevice(String id, String customerId) {
-		logAction("delete", customerId, id);
-		getTable().deleteItem(new Device(id, customerId));
-	}
-
 	public void createDeviceTable() {
 		TableCreationUtils.createTable(
 				Arrays.asList(
@@ -38,9 +18,5 @@ public class ExtendedDeviceComponent extends DeviceComponent {
 						Device.SITE_INDEX,
 						Device.VIRTUAL_INDEX),
 				getTable());
-	}
-
-	private void logAction(String action, String customerId, String id) {
-		logger.debug(customerId + ":" + id + " device " + action);
 	}
 }
