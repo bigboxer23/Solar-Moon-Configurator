@@ -7,11 +7,10 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 /**
- * This class sets up (and tears down) transaction specific information in a threadlocal
+ * This class sets up (and tears down) transaction specific information in a thread local
  * (TransactionUtil) available for usage throughout items within the annotated method (and chain)
  */
 @Component
@@ -30,12 +29,10 @@ public class TransactionAspect {
 							.orElseGet(request::getRemoteAddr))
 					.orElse(null));
 		}
-		TransactionUtil.addToMDC();
 	}
 
 	@After("transactionPointcut()")
 	public void afterMethodCallsAdvice(JoinPoint jp) {
 		TransactionUtil.clear();
-		MDC.clear();
 	}
 }
