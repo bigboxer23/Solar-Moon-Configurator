@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- */
+/** */
 @Tag(name = "Search Controller", description = "Search for device data")
 @RestController
-public class OpenSearchController
-{
+public class OpenSearchController {
 	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
 	private final ExtendedDeviceComponent deviceComponent;
@@ -32,7 +29,10 @@ public class OpenSearchController
 
 	private final OpenSearchComponent OSComponent;
 
-	public OpenSearchController(ExtendedDeviceComponent deviceComponent, ExtendedCustomerComponent component, OpenSearchComponent OSComponent) {
+	public OpenSearchController(
+			ExtendedDeviceComponent deviceComponent,
+			ExtendedCustomerComponent component,
+			OpenSearchComponent OSComponent) {
 		this.deviceComponent = deviceComponent;
 		this.component = component;
 		this.OSComponent = OSComponent;
