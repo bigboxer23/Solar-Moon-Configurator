@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedDeviceComponent extends DeviceComponent {
+
+	public ExtendedDeviceComponent(SubscriptionComponent subscriptionComponent) {
+		super(subscriptionComponent);
+	}
+
 	public void createDeviceTable() {
 		TableCreationUtils.createTable(
 				Arrays.asList(

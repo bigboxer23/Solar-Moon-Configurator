@@ -42,7 +42,9 @@ public class DeviceController {
 		try {
 			device.setClientId(customer.getCustomerId());
 			device.setId(TokenGenerator.generateNewToken());
-			deviceComponent.addDevice(device);
+			if (!deviceComponent.addDevice(device)) {
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			}
 		} catch (Exception e) {
 			logger.warn("addDevice error: " + device, e);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
