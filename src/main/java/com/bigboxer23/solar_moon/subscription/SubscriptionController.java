@@ -1,6 +1,8 @@
-package com.bigboxer23.solar_moon;
+package com.bigboxer23.solar_moon.subscription;
 
+import com.bigboxer23.solar_moon.customer.ExtendedCustomerComponent;
 import com.bigboxer23.solar_moon.data.Customer;
+import com.bigboxer23.solar_moon.util.AuthUtil;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,17 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- */
+/** */
 @RestController
-public class SubscriptionController
-{
+public class SubscriptionController {
 	private ExtendedCustomerComponent component;
 
 	private ExtendedSubscriptionComponent subscriptionComponent;
 
-	public SubscriptionController(ExtendedCustomerComponent component, ExtendedSubscriptionComponent subscriptionComponent) {
+	public SubscriptionController(
+			ExtendedCustomerComponent component, ExtendedSubscriptionComponent subscriptionComponent) {
 		this.component = component;
 		this.subscriptionComponent = subscriptionComponent;
 	}
@@ -32,6 +32,7 @@ public class SubscriptionController
 		if (customer == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		return new ResponseEntity<>(subscriptionComponent.getSubscriptionPacks(customer.getCustomerId()), HttpStatus.OK);
+		return new ResponseEntity<>(
+				subscriptionComponent.getSubscriptionPacks(customer.getCustomerId()), HttpStatus.OK);
 	}
 }

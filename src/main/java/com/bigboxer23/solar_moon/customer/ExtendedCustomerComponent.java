@@ -1,5 +1,6 @@
-package com.bigboxer23.solar_moon;
+package com.bigboxer23.solar_moon.customer;
 
+import com.bigboxer23.solar_moon.CustomerComponent;
 import com.bigboxer23.solar_moon.data.Customer;
 import com.bigboxer23.solar_moon.util.TableCreationUtils;
 import java.util.Arrays;
