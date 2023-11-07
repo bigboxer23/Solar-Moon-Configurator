@@ -3,6 +3,7 @@ package com.bigboxer23.solar_moon;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.bigboxer23.solar_moon.data.Device;
+import com.bigboxer23.solar_moon.device.ExtendedDeviceComponent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

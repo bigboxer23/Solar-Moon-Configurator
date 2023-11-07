@@ -1,5 +1,6 @@
 package com.bigboxer23.solar_moon;
 
+import com.bigboxer23.solar_moon.subscription.ExtendedSubscriptionComponent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

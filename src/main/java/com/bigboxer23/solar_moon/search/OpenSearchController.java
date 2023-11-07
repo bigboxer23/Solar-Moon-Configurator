@@ -1,9 +1,13 @@
-package com.bigboxer23.solar_moon;
+package com.bigboxer23.solar_moon.search;
 
+import com.bigboxer23.solar_moon.customer.ExtendedCustomerComponent;
 import com.bigboxer23.solar_moon.data.Customer;
+import com.bigboxer23.solar_moon.device.DeviceController;
+import com.bigboxer23.solar_moon.device.ExtendedDeviceComponent;
 import com.bigboxer23.solar_moon.open_search.OpenSearchComponent;
 import com.bigboxer23.solar_moon.open_search.OpenSearchUtils;
 import com.bigboxer23.solar_moon.open_search.SearchJSON;
+import com.bigboxer23.solar_moon.util.AuthUtil;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

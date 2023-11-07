@@ -1,6 +1,7 @@
-package com.bigboxer23.solar_moon;
+package com.bigboxer23.solar_moon.customer;
 
 import com.bigboxer23.solar_moon.data.Customer;
+import com.bigboxer23.solar_moon.util.AuthUtil;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -2,6 +2,7 @@ package com.bigboxer23.solar_moon;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.bigboxer23.solar_moon.customer.ExtendedCustomerComponent;
 import com.bigboxer23.solar_moon.data.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
