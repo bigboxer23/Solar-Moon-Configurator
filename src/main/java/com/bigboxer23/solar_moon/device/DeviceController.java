@@ -118,6 +118,6 @@ public class DeviceController {
 		if (customer == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		return new ResponseEntity<>(deviceComponent.getDevices(customer.getCustomerId()), HttpStatus.OK);
+		return new ResponseEntity<>(deviceComponent.getDevicesForCustomerId(customer.getCustomerId()), HttpStatus.OK);
 	}
 }
