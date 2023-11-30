@@ -30,7 +30,7 @@ public class AuthUtil {
 			return Optional.ofNullable(moshi.adapter(CognitoUserAttributes.class)
 							.fromJson(new String(Base64.getUrlDecoder().decode(chunks[1]))))
 					.map(CognitoUserAttributes::getSub)
-					.map(component::findCustomerByCustomerId)
+					.flatMap(component::findCustomerByCustomerId)
 					.orElse(null);
 		} catch (IOException e) {
 			logger.warn("authorize", e);
