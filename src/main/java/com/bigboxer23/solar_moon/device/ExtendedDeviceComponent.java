@@ -1,8 +1,7 @@
 package com.bigboxer23.solar_moon.device;
 
-import com.bigboxer23.solar_moon.DeviceComponent;
-import com.bigboxer23.solar_moon.SubscriptionComponent;
 import com.bigboxer23.solar_moon.data.Device;
+import com.bigboxer23.solar_moon.subscription.SubscriptionComponent;
 import com.bigboxer23.solar_moon.util.TableCreationUtils;
 import java.util.Arrays;
 import org.springframework.stereotype.Component;
