@@ -1,11 +1,11 @@
-package com.bigboxer23.solar_moon.weather;
+package com.bigboxer23.solar_moon.mapping;
 
 import com.bigboxer23.solar_moon.util.TableCreationUtils;
 import java.util.Collections;
 
 /** */
-public class ExtendedPirateWeatherComponent extends PirateWeatherComponent {
-	public void createWeatherTable() {
+public class ExtendedMappingComponent extends MappingComponent {
+	public void createMappingTable() {
 		TableCreationUtils.createTable(Collections.emptyList(), getTable());
 	}
 }
