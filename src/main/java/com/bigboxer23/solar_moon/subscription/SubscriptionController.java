@@ -2,6 +2,7 @@ package com.bigboxer23.solar_moon.subscription;
 
 import com.bigboxer23.solar_moon.customer.ExtendedCustomerComponent;
 import com.bigboxer23.solar_moon.data.Customer;
+import com.bigboxer23.solar_moon.data.Subscription;
 import com.bigboxer23.solar_moon.util.AuthUtil;
 import com.bigboxer23.solar_moon.web.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,10 @@ public class SubscriptionController {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
 		return new ResponseEntity<>(
-				subscriptionComponent.getSubscriptionPacks(customer.getCustomerId()), HttpStatus.OK);
+				subscriptionComponent
+						.getSubscription(customer.getCustomerId())
+						.map(Subscription::getPacks)
+						.orElse(0),
+				HttpStatus.OK);
 	}
 }

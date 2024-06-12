@@ -23,15 +23,22 @@ public class TestExtendedDeviceComponent {
 		device.setSite("test site");
 		component.addDevice(device);
 
-		Device dbDevice = component.getDevice(device.getId(), device.getClientId());
+		Device dbDevice =
+				component.findDeviceById(device.getId(), device.getClientId()).orElse(null);
+		assertNotNull(dbDevice);
 		assertEquals(device.getSite(), dbDevice.getSite());
 		dbDevice.setSite("test site 2");
 		component.updateDevice(dbDevice);
 		assertEquals(
 				dbDevice.getSite(),
-				component.getDevice(dbDevice.getId(), dbDevice.getClientId()).getSite());
+				component
+						.findDeviceById(dbDevice.getId(), dbDevice.getClientId())
+						.map(Device::getSite)
+						.get());
 		component.deleteDevice(dbDevice.getId(), dbDevice.getClientId());
-		assertNull(component.getDevice(dbDevice.getId(), dbDevice.getClientId()));
+		assertFalse(component
+				.findDeviceById(dbDevice.getId(), dbDevice.getClientId())
+				.isPresent());
 	}
 
 	/*@Test

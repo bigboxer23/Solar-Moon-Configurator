@@ -39,12 +39,12 @@
     <dependency>
       <groupId>com.bigboxer23</groupId>
       <artifactId>solar-moon-common</artifactId>
-      <version>1.7.0</version>
+      <version>1.8.26</version>
     </dependency>
     <dependency>
       <groupId>com.bigboxer23</groupId>
       <artifactId>solar-moon-common</artifactId>
-      <version>1.7.0</version>
+      <version>1.8.26</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -125,7 +125,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
-        <executions>
+        <!--?<executions>
           <execution>
             <id>Uploading jar to server</id>
             <goals>
@@ -148,7 +148,7 @@
               <commandlineArgs>-i ${identity_file} ${user}@${host} sudo systemctl restart solar-moon-backend.service</commandlineArgs>
             </configuration>
           </execution>
-        </executions>
+        </executions>-->
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
