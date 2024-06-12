@@ -44,7 +44,7 @@ public class DeviceController {
 		try {
 			device.setClientId(customer.getCustomerId());
 			device.setId(TokenGenerator.generateNewToken());
-			if (!deviceComponent.addDevice(device)) {
+			if (deviceComponent.addDevice(device) == null) {
 				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
@@ -91,7 +91,8 @@ public class DeviceController {
 		if (customer == null) {
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		}
-		return new ResponseEntity<>(deviceComponent.getDevice(id, customer.getCustomerId()), HttpStatus.OK);
+		return new ResponseEntity<>(
+				deviceComponent.findDeviceById(id, customer.getCustomerId()).orElse(null), HttpStatus.OK);
 	}
 
 	@Transaction
