@@ -2,4 +2,9 @@
 
 # Solar-Moon-Configurator
 
-Backend services for configuring solar moon site
+This repo contains web apis for configuring the solar moon backend.It should not be exposed publicly, and should only be
+run to assist with setting up initial backend resources.
+
+## Swagger
+
+Swagger UI is available at `http://127.0.0.1:8084/swagger-ui/index.html`. Various creation APIs exist across available controllers
