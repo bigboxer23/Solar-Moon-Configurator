@@ -8,15 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 
 /** */
+@Slf4j
 public class AuthUtil {
 	private static final Moshi moshi = new Moshi.Builder().build();
-
-	private static final Logger logger = LoggerFactory.getLogger(AuthUtil.class);
 
 	public static Customer authorize(HttpServletRequest servletRequest, CustomerComponent component) {
 
@@ -33,7 +31,7 @@ public class AuthUtil {
 					.flatMap(component::findCustomerByCustomerId)
 					.orElse(null);
 		} catch (IOException e) {
-			logger.warn("authorize", e);
+			log.warn("authorize", e);
 		}
 		return null;
 	}

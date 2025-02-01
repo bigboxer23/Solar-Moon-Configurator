@@ -11,17 +11,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /** */
+@Slf4j
 @Tag(name = "Device Controller", description = "Create/Read/Update/Delete devices api")
 @RestController
 public class DeviceController {
-	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
 	private final ExtendedDeviceComponent deviceComponent;
 
@@ -48,7 +47,7 @@ public class DeviceController {
 				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			logger.warn("addDevice error: " + device, e);
+			log.warn("addDevice error: " + device, e);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(null, HttpStatus.OK);
