@@ -6,7 +6,12 @@ import java.util.Collections;
 /** */
 public class ExtendedOpenSearchStatusComponent extends OpenSearchStatusComponent {
 
+	@Override
+	public ExtendedOpenSearchStatusRepository getRepository() {
+		return (ExtendedOpenSearchStatusRepository) super.getRepository();
+	}
+
 	public void createOpenSearchStatusTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }

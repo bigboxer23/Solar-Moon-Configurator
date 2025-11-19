@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExtendedAlarmComponent extends AlarmComponent {
 
+	@Override
+	public ExtendedAlarmRepository getRepository() {
+		return (ExtendedAlarmRepository) super.getRepository();
+	}
+
 	public void createAlarmTable() {
 		TableCreationUtils.createTable(
 				Arrays.asList(
@@ -19,6 +24,6 @@ public class ExtendedAlarmComponent extends AlarmComponent {
 						Alarm.STATE_CUSTOMER_INDEX,
 						Alarm.DEVICE_CUSTOMER_INDEX,
 						Alarm.DEVICEID_STARTDATE_INDEX),
-				getTable());
+				getRepository().getTable());
 	}
 }

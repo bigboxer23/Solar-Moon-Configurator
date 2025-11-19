@@ -7,7 +7,12 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedSubscriptionComponent extends SubscriptionComponent {
+	@Override
+	public ExtendedSubscriptionRepository getRepository() {
+		return (ExtendedSubscriptionRepository) super.getRepository();
+	}
+
 	public void createSubscriptionTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }

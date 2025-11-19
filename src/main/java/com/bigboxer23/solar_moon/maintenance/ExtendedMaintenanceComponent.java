@@ -7,7 +7,13 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedMaintenanceComponent extends MaintenanceComponent {
+
+	@Override
+	public ExtendedMaintenanceRepository getRepository() {
+		return (ExtendedMaintenanceRepository) super.getRepository();
+	}
+
 	public void createMaintenanceTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }
