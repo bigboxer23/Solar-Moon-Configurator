@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExtendedCustomerComponent extends CustomerComponent {
 
+	@Override
+	public ExtendedCustomerRepository getRepository() {
+		return (ExtendedCustomerRepository) super.getRepository();
+	}
+
 	public void createCustomerTable() {
 		TableCreationUtils.createTable(
-				Arrays.asList(Customer.ACCESS_KEY_INDEX, Customer.CUSTOMER_ID_INDEX), getTable());
+				Arrays.asList(Customer.ACCESS_KEY_INDEX, Customer.CUSTOMER_ID_INDEX),
+				getRepository().getTable());
 	}
 }

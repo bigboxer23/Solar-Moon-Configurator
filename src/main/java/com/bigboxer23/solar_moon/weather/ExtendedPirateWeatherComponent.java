@@ -5,7 +5,12 @@ import java.util.Collections;
 
 /** */
 public class ExtendedPirateWeatherComponent extends PirateWeatherComponent {
+	@Override
+	public ExtendedDynamoDbWeatherRepository getRepository() {
+		return (ExtendedDynamoDbWeatherRepository) super.getRepository();
+	}
+
 	public void createWeatherTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }

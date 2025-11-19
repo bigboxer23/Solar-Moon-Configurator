@@ -7,7 +7,13 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedLinkedDeviceComponent extends LinkedDeviceComponent {
+
+	@Override
+	public ExtendedLinkedDeviceRepository getRepository() {
+		return (ExtendedLinkedDeviceRepository) super.getRepository();
+	}
+
 	public void createDeviceUpdateTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }

@@ -8,7 +8,14 @@ import org.springframework.stereotype.Component;
 /** */
 @Component
 public class ExtendedDeviceUpdateComponent extends DeviceUpdateComponent {
+	@Override
+	public ExtendedDeviceUpdateRepository getRepository() {
+		return (ExtendedDeviceUpdateRepository) super.getRepository();
+	}
+
 	public void createDeviceUpdateTable() {
-		TableCreationUtils.createTable(Collections.singletonList(DeviceUpdateData.IDENTITY_UPDATE_INDEX), getTable());
+		TableCreationUtils.createTable(
+				Collections.singletonList(DeviceUpdateData.IDENTITY_UPDATE_INDEX),
+				getRepository().getTable());
 	}
 }

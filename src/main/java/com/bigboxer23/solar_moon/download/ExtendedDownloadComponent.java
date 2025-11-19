@@ -5,7 +5,13 @@ import java.util.Collections;
 
 /** */
 public class ExtendedDownloadComponent extends DownloadComponent {
+
+	@Override
+	public ExtendedDownloadRepository getRepository() {
+		return (ExtendedDownloadRepository) super.getRepository();
+	}
+
 	public void createDownloadRequestTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }

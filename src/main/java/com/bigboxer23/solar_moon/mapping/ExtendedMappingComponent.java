@@ -5,7 +5,12 @@ import java.util.Collections;
 
 /** */
 public class ExtendedMappingComponent extends MappingComponent {
+	@Override
+	public ExtendedMappingRepository getRepository() {
+		return (ExtendedMappingRepository) super.getRepository();
+	}
+
 	public void createMappingTable() {
-		TableCreationUtils.createTable(Collections.emptyList(), getTable());
+		TableCreationUtils.createTable(Collections.emptyList(), getRepository().getTable());
 	}
 }
