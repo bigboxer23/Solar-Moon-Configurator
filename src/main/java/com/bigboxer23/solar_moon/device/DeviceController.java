@@ -24,7 +24,7 @@ public class DeviceController {
 
 	private final ExtendedDeviceComponent deviceComponent;
 
-	private ExtendedCustomerComponent component;
+	private final ExtendedCustomerComponent component;
 
 	public DeviceController(ExtendedDeviceComponent deviceComponent, ExtendedCustomerComponent component) {
 		this.deviceComponent = deviceComponent;
@@ -38,19 +38,19 @@ public class DeviceController {
 	public ResponseEntity<Void> addDevice(HttpServletRequest servletRequest, @RequestBody Device device) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		try {
 			device.setClientId(customer.getCustomerId());
 			device.setId(TokenGenerator.generateNewToken());
 			if (deviceComponent.addDevice(device) == null) {
-				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 			}
 		} catch (Exception e) {
 			log.warn("addDevice error: " + device, e);
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -59,11 +59,11 @@ public class DeviceController {
 	public ResponseEntity<Void> updateDevice(HttpServletRequest servletRequest, @RequestBody Device device) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		device.setClientId(customer.getCustomerId());
 		deviceComponent.updateDevice(device);
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -74,10 +74,10 @@ public class DeviceController {
 			@Parameter(description = "id of the device to delete") @PathVariable("id") String id) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		deviceComponent.deleteDevice(id, customer.getCustomerId());
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -88,7 +88,7 @@ public class DeviceController {
 			@Parameter(description = "id of the device to find") @PathVariable("id") String id) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		return new ResponseEntity<>(
 				deviceComponent.findDeviceById(id, customer.getCustomerId()).orElse(null), HttpStatus.OK);
@@ -102,10 +102,10 @@ public class DeviceController {
 	public ResponseEntity<Void> createDeviceTable(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null || !customer.isAdmin()) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		deviceComponent.createDeviceTable();
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -116,7 +116,7 @@ public class DeviceController {
 	public ResponseEntity<List<Device>> getDevices(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		return new ResponseEntity<>(deviceComponent.getDevicesForCustomerId(customer.getCustomerId()), HttpStatus.OK);
 	}

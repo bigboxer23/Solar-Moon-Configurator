@@ -41,7 +41,7 @@ public class OpenSearchController {
 	public ResponseEntity<String> search(HttpServletRequest servletRequest, @RequestBody SearchJSON searchRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		searchRequest.setCustomerId(customer.getCustomerId());
 		return new ResponseEntity<>(OpenSearchUtils.queryToJson(OSComponent.search(searchRequest)), HttpStatus.OK);

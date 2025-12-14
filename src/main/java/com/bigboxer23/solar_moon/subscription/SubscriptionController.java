@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 /** */
 @RestController
 public class SubscriptionController {
-	private ExtendedCustomerComponent component;
+	private final ExtendedCustomerComponent component;
 
-	private ExtendedSubscriptionComponent subscriptionComponent;
+	private final ExtendedSubscriptionComponent subscriptionComponent;
 
 	public SubscriptionController(
 			ExtendedCustomerComponent component, ExtendedSubscriptionComponent subscriptionComponent) {
@@ -31,7 +31,7 @@ public class SubscriptionController {
 	public ResponseEntity<Integer> getCustomer(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		return new ResponseEntity<>(
 				subscriptionComponent

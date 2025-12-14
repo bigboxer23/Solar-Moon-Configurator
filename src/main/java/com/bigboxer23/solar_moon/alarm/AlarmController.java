@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 /** */
 @RestController
 public class AlarmController {
-	private ExtendedAlarmComponent alarmComponent;
+	private final ExtendedAlarmComponent alarmComponent;
 
-	private ExtendedCustomerComponent customerComponent;
+	private final ExtendedCustomerComponent customerComponent;
 
 	public AlarmController(ExtendedAlarmComponent alarmComponent, ExtendedCustomerComponent customerComponent) {
 		this.alarmComponent = alarmComponent;
@@ -31,9 +31,9 @@ public class AlarmController {
 	public ResponseEntity<Void> createDeviceTable(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, customerComponent);
 		if (customer == null || !customer.isAdmin()) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		alarmComponent.createAlarmTable();
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
