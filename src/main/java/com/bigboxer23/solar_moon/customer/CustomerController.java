@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Customer Controller", description = "APIs for dealing with customer data")
 @RestController
 public class CustomerController {
-	private ExtendedCustomerComponent component;
+	private final ExtendedCustomerComponent component;
 
 	public CustomerController(ExtendedCustomerComponent component) {
 		this.component = component;
@@ -28,10 +28,10 @@ public class CustomerController {
 	public ResponseEntity<Void> createTable(HttpServletRequest servletRequest) {
 		Customer jwtCustomer = AuthUtil.authorize(servletRequest, component);
 		if (jwtCustomer == null || !jwtCustomer.isAdmin()) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		component.createCustomerTable();
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -40,11 +40,11 @@ public class CustomerController {
 	public ResponseEntity<Void> updateCustomer(HttpServletRequest servletRequest, @RequestBody Customer customer) {
 		Customer jwtCustomer = AuthUtil.authorize(servletRequest, component);
 		if (jwtCustomer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		customer.setCustomerId(jwtCustomer.getCustomerId());
 		component.updateCustomer(customer);
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -53,10 +53,10 @@ public class CustomerController {
 	public ResponseEntity<Void> deleteCustomer(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		component.deleteCustomerByCustomerId(customer.getCustomerId());
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Transaction
@@ -65,7 +65,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> getCustomer(HttpServletRequest servletRequest) {
 		Customer customer = AuthUtil.authorize(servletRequest, component);
 		if (customer == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
